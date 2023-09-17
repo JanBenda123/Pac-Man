@@ -20,6 +20,13 @@ public:
 	void step() override;
 };
 
+class ObjPlayer :public GameObject {
+public:
+	int dir; // 0 - still, 1 - right, 2 - up, 3 - left, 4 - down
+	ObjPlayer();
+	void step() override;
+};
+
 class ObjDeco :public GameObject {
 public:
 	ObjDeco(char sprite);

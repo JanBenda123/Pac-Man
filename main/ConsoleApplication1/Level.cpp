@@ -1,7 +1,11 @@
 #include "Level.h"
+#include "Renderer.h"
+#include "EventLoop.h"
 #include <iostream>
 #include <fstream>
 #include "GameObjects.h"
+
+
 
 Level::Level(std::string layoutFilePath) {
 	this->width = 10;
@@ -12,12 +16,18 @@ Level::Level(std::string layoutFilePath) {
 	this->levelLayout = new char[size + 1];// for line tremanation
 	layoutFile.read(this->levelLayout, size);
 	this->levelLayout[size] = '\0';  // terminate the string
+
+	this->eventLoop = new EventLoop(this);
+	this->renderer = new Renderer(this);
 }
 
 void Level::load() {
 	/// <summary>
 	/// Loads the level - processes layout string into sorted object list;
 	/// </summary>
+	
+	
+	
 	
 	int i = 0;
 	char c;
@@ -46,6 +56,9 @@ void Level::load() {
 
 		}
 	}
+
+
+	this->eventLoop->processQueue();
 
 }
 

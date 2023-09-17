@@ -14,7 +14,7 @@ void GameObject::step() {
 
 
 DynGameObject::DynGameObject() {
-	this->dir = 1;
+	this->dir = 0;
 	this->sprite = 'D';
 	this->zIndex = 2;
 	this->isDyn = true;
@@ -33,6 +33,12 @@ DynGameObject::DynGameObject() {
 }
 
 
+ ObjPlayer::ObjPlayer() {
+	 this->dir = 0;
+	 this->sprite = 'D';
+	 this->zIndex = 2;
+	 this->isDyn = true;
+ }
 
 
 ObjDeco::ObjDeco(char sprite) {

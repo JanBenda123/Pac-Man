@@ -1,12 +1,13 @@
 #include "Renderer.h"
+#include "Level.h"
 #include <iostream>
-#include <stdlib.h>
+#include <windows.h>
 
 Renderer::Renderer(Level* level) {
 	this->level = level;
 };
 void Renderer::render() {
-	//system("cls");
+	system("cls");
 	std::list<GameObject*>::iterator it = level->objectList.begin();
 	GameObject* objToDraw;
 	int isLast = 0;
@@ -33,7 +34,10 @@ void Renderer::render() {
 		}
 		if (isLast) { break; }						// break the second for loop
 		std::cout << '\n';
+		
 	}
+	
+	
 
 }
 

@@ -1,5 +1,6 @@
 #pragma once
-#include "Level.h"
+
+class Level;
 
 class Renderer {
 public:
