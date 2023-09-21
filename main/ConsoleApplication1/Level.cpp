@@ -13,7 +13,7 @@ Level::Level(std::string layoutFilePath) {
 	int size = (width + 2) * height - 2;// +-2 to account for line breaks
 
 	std::ifstream layoutFile(layoutFilePath, std::ios::binary);
-	this->levelLayout = new char[size + 1];// for line tremanation
+	this->levelLayout = new char[size + 1];// for line temanation
 	layoutFile.read(this->levelLayout, size);
 	this->levelLayout[size] = '\0';  // terminate the string
 
@@ -32,24 +32,28 @@ void Level::load() {
 	int i = 0;
 	char c;
 
-	for (int y = 0; y < this->height ; y++) {
+	for (int y = 0; y < this->height ; y++) {//loads the level
 		for (int x = 0; x < this->width+2; x++) {
 			c = levelLayout[x + y * (this->width + 2)];
-			if (c == ' ' || c == '\n' || c == '\r') {
+			if (c == ' ' || c == '\n' || c == '\r') {//skip for empty files
 				continue;
 			}
 
 			GameObject* newObj;
+			
+
+			//Parses level text files to game objects
 			if (c == 'A') {
 				newObj = new DynGameObject();
 			}
 			else if (c == 'X') {
-				newObj = new ObjDeco('X');
+				newObj = new ObjWall();
 			}
 			else {
 				newObj = new ObjDeco(c);
 			}
 
+			newObj->addLevelPointer(this);
 			newObj->x = x;
 			newObj->y = y;
 			this->objectList.push_back(newObj);
@@ -77,3 +81,12 @@ void Level::step() {
 
 
 }
+
+GameObject* Level::isObjAt(int x, int y, int typeId) {
+	for (GameObject* go : this->objectList) {
+		if (go->x == x && go->y == y && go->typeId == typeId) {
+			return go;
+		}
+	}
+	return NULL;
+};

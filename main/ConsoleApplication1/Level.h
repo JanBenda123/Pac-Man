@@ -6,6 +6,7 @@
 
 class Renderer; 
 class EventLoop;
+class GameObject;
 
 class Level
 {
@@ -18,6 +19,8 @@ public:
 	Renderer* renderer;
 	std::list<GameObject*> objectList;
 	Level(std::string layoutFilePath);
+	GameObject* isObjAt(int x, int y, int typeId);
+
 	
 	void load();
 	void step();

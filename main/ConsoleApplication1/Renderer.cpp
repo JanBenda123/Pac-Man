@@ -36,8 +36,6 @@ void Renderer::render() {
 		std::cout << '\n';
 		
 	}
-	
-	
 
 }
 

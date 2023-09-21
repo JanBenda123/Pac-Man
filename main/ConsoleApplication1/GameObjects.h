@@ -1,5 +1,8 @@
 #pragma once
 #include <string>
+#include "Level.h"
+
+class Level;
 
 class GameObject {
 public:
@@ -8,9 +11,12 @@ public:
 	int y;
 	int zIndex;
 	bool isDyn;
+	int typeId;
+	Level* level;
 	GameObject();
 	virtual void step();
-
+	void addLevelPointer(Level* level);
+	
 };
 
 class DynGameObject :public GameObject {
@@ -18,11 +24,17 @@ public:
 	int dir; // 0 - still, 1 - right, 2 - up, 3 - left, 4 - down
 	DynGameObject();
 	void step() override;
+	GameObject* checkDirectCollision(int typeId);
+	GameObject* checkForwardCollision(int typeId);
 };
 
-class ObjPlayer :public GameObject {
+class ObjWall :public GameObject {
 public:
-	int dir; // 0 - still, 1 - right, 2 - up, 3 - left, 4 - down
+	ObjWall();
+};
+
+class ObjPlayer :public DynGameObject {
+public:
 	ObjPlayer();
 	void step() override;
 };

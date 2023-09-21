@@ -17,6 +17,6 @@ EventLoop::EventLoop(Level* level) {
 void EventLoop::processQueue() {
 	level->step();
 	level->renderer->render();
-	Sleep(2000);
+	Sleep(500);
 	this->processQueue();
 }
