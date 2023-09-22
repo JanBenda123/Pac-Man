@@ -43,7 +43,7 @@ void EventLoop::processQueue() {
 	this->unlockQueue();
 	level->step();
 	level->renderer->render();
-	std::this_thread::sleep_for(std::chrono::microseconds(500*1000));
+	std::this_thread::sleep_for(std::chrono::microseconds(200*1000));
 }
 
 void EventLoop::appendEvent(Event e) {

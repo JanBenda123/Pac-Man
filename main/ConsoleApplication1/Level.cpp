@@ -8,8 +8,8 @@
 
 
 Level::Level(std::string layoutFilePath) {
-	this->width = 10;
-	this->height = 10;
+	this->width = 20;
+	this->height = 15;
 	int size = (width + 2) * height - 2;// +-2 to account for line breaks
 
 	std::ifstream layoutFile(layoutFilePath, std::ios::binary);
@@ -46,6 +46,9 @@ void Level::load() {
 			}
 			else if (c == 'X') {
 				newObj = new ObjWall();
+			}
+			else if (c == '.') {
+				newObj = new ObjPoint();
 			}
 			else {
 				newObj = new ObjDeco(c);

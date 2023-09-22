@@ -21,7 +21,15 @@ void GameObject::processEvent(Event* e)
 {
 }
 
+GameObject* GameObject::checkDirectCollision(int typeId) {
+	//Kontroluje pøímé kolitze a vrátí pøíslušný objekt
+	return this->level->isObjAt(this->x, this->y, typeId);
+};
 
+void GameObject::remove() {
+	this->level->objectList.remove(this);
+	this->level->eventListeningObjectList.remove(this);
+}
 
 
 ObjWall::ObjWall() {
@@ -56,10 +64,7 @@ DynGameObject::DynGameObject() {
 	 }
 }
 
- GameObject* DynGameObject::checkDirectCollision(int typeId) {
-	 //Kontroluje pøímé kolitze a vrátí pøíslušný objekt
-	 return this->level->isObjAt(this->x, this->y, typeId);
- };
+
 
  GameObject* DynGameObject::checkForwardCollision(int typeId) {
 	 int cx = this->x;
@@ -111,3 +116,14 @@ ObjDeco::ObjDeco(char sprite) {
 	this->typeId = 1;
 }
 
+ObjPoint::ObjPoint()
+{
+	this->sprite = '.';
+	this->typeId = 5;
+}
+
+void ObjPoint::step() {
+	if (this->checkDirectCollision(3) != NULL) {
+		this->remove(); //removing while still being pointed at in Level causes shit go haywire. Fix ASAP 
+	}
+}
