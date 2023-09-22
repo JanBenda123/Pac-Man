@@ -1,3 +1,2 @@
-﻿  EventLoop.cpp
-C:\Users\benda\Programování\Pac-Man\main\ConsoleApplication1\EventLoop.cpp(22): warning C4717: EventLoop::processQueue: Rekurzivní pro všechny cesty ovládacích prvků; funkce způsobí za běhu přetečení zásobníku.
+﻿  Renderer.cpp
   ConsoleApplication1.vcxproj -> C:\Users\benda\Programování\Pac-Man\main\x64\Debug\ConsoleApplication1.exe

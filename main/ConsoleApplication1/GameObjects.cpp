@@ -1,4 +1,6 @@
 #include "GameObjects.h"
+#include "EventLoop.h"
+
 
 GameObject::GameObject() {
 	this->sprite = ' ';
@@ -15,13 +17,16 @@ void GameObject::step() {
 	
 }
 
+void GameObject::processEvent(Event* e)
+{
+}
+
 
 
 
 ObjWall::ObjWall() {
 	this->sprite = 'X';
 	this->zIndex = 1;
-	this->isDyn = false;
 	this->typeId = 4;
 }
 
@@ -33,6 +38,7 @@ DynGameObject::DynGameObject() {
 	this->zIndex = 2;
 	this->isDyn = true;
 	this->typeId = 2;
+	this->listensToEvents = false;
 }
 
  void DynGameObject::step(){
@@ -51,6 +57,7 @@ DynGameObject::DynGameObject() {
 }
 
  GameObject* DynGameObject::checkDirectCollision(int typeId) {
+	 //Kontroluje pøímé kolitze a vrátí pøíslušnı objekt
 	 return this->level->isObjAt(this->x, this->y, typeId);
  };
 
@@ -74,15 +81,27 @@ DynGameObject::DynGameObject() {
 
 
  ObjPlayer::ObjPlayer() {
-	 this->dir = 0;
 	 this->sprite = 'P';
-	 this->zIndex = 2;
-	 this->isDyn = true;
 	 this->typeId = 3;
+	 this->listensToEvents = true;
  }
 
  void ObjPlayer::step() {
-	
+	 DynGameObject::step();
+ }
+
+ void ObjPlayer::processEvent(Event* e)
+ {
+	 switch (e->type)
+	 {
+	 case 1:
+		 switch (e->data) {
+			case 'w':this->dir = 2; break;
+			case 'a':this->dir = 3; break;
+			case 's':this->dir = 4; break;
+			case 'd':this->dir = 1; break;
+		 }
+	 }
  }
 
 

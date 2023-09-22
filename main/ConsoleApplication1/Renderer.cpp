@@ -29,8 +29,8 @@ void Renderer::render() {
 				}
 			}
 			if (isLast) { break; }					// break the first for loop
-			if (spaceNotEmpty) { std::cout << objToDraw->sprite; }	// If object belong here, print its spaite
-			else { std::cout << ' '; }				// If the loaded object does not belong to that space, whitespace character will be printed instead		
+			if (spaceNotEmpty) { std::cout << objToDraw->sprite << ' '; }	// If object belong here, print its spaite
+			else { std::cout << ' ' << ' '; }				// If the loaded object does not belong to that space, whitespace character will be printed instead		
 		}
 		if (isLast) { break; }						// break the second for loop
 		std::cout << '\n';

@@ -1,23 +1,38 @@
 #pragma once
 
 #include <string>
+#include <list>
 #include "Renderer.h"
+
 
 class Level;
 class GameObject;
-class EventLoop
-{	
-public:
-	Level* level;
-	//std::list<Event*> eventQueue;
-	EventLoop(Level* level);
-	void processQueue();
-};
+class InputHandler;
 
 class Event {
 public:
-	std::string type;
-	GameObject* target;
-	Event(std::string type, GameObject* target);
+	int type;
+	char data;
+	Event(int type, char data);
 };
+
+
+class EventLoop{	
+private:
+	void lockQueue();
+	void unlockQueue();
+public:
+	bool queueUnlocked;
+	Level* level;
+	InputHandler* inputHandler;
+	std::list<Event*> eventQueue;
+	EventLoop(Level* level);
+	void processQueue();
+	void clear();
+	void startIHThread();
+	void appendEvent(Event e);
+
+};
+
+
 

@@ -18,6 +18,7 @@ public:
 	EventLoop* eventLoop;
 	Renderer* renderer;
 	std::list<GameObject*> objectList;
+	std::list<GameObject*> eventListeningObjectList;
 	Level(std::string layoutFilePath);
 	GameObject* isObjAt(int x, int y, int typeId);
 

@@ -1,8 +1,10 @@
 #pragma once
 #include <string>
 #include "Level.h"
+#include "EventLoop.h"
 
 class Level;
+class Event;
 
 class GameObject {
 public:
@@ -11,10 +13,12 @@ public:
 	int y;
 	int zIndex;
 	bool isDyn;
+	bool listensToEvents;
 	int typeId;
 	Level* level;
 	GameObject();
 	virtual void step();
+	virtual void processEvent(Event* e);
 	void addLevelPointer(Level* level);
 	
 };
@@ -37,6 +41,7 @@ class ObjPlayer :public DynGameObject {
 public:
 	ObjPlayer();
 	void step() override;
+	void processEvent(Event* e) override;
 };
 
 class ObjDeco :public GameObject {

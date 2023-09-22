@@ -26,9 +26,7 @@ void Level::load() {
 	/// Loads the level - processes layout string into sorted object list;
 	/// </summary>
 	
-	
-	
-	
+
 	int i = 0;
 	char c;
 
@@ -43,8 +41,8 @@ void Level::load() {
 			
 
 			//Parses level text files to game objects
-			if (c == 'A') {
-				newObj = new DynGameObject();
+			if (c == 'P') {
+				newObj = new ObjPlayer();
 			}
 			else if (c == 'X') {
 				newObj = new ObjWall();
@@ -57,13 +55,15 @@ void Level::load() {
 			newObj->x = x;
 			newObj->y = y;
 			this->objectList.push_back(newObj);
-
+			if (newObj->listensToEvents) {
+				this->eventListeningObjectList.push_back(newObj);
+			}
 		}
 	}
-
-
-	this->eventLoop->processQueue();
-
+	this->eventLoop->startIHThread();
+	while (true) {
+		this->eventLoop->processQueue();
+	}
 }
 
 void Level::step() {

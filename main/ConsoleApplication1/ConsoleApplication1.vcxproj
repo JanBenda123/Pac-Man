@@ -130,12 +130,14 @@
     <ClCompile Include="ConsoleApplication1.cpp" />
     <ClCompile Include="EventLoop.cpp" />
     <ClCompile Include="GameObjects.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EventLoop.h" />
     <ClInclude Include="GameObjects.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Renderer.h" />
   </ItemGroup>
