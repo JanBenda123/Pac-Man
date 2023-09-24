@@ -1,5 +1,6 @@
 #include "GameObjects.h"
 #include "EventLoop.h"
+#include <cstdlib>
 
 
 GameObject::GameObject() {
@@ -7,6 +8,7 @@ GameObject::GameObject() {
 	this->zIndex = 1;
 	this->isDyn = false;
 	this->typeId = 0;
+	this->flagRm = false;
 }
 
 void GameObject::addLevelPointer(Level* level) {
@@ -22,13 +24,12 @@ void GameObject::processEvent(Event* e)
 }
 
 GameObject* GameObject::checkDirectCollision(int typeId) {
-	//Kontroluje pøímé kolitze a vrátí pøíslušný objekt
+	//Kontroluje pøímé kolize a vrátí pøíslušný objekt
 	return this->level->isObjAt(this->x, this->y, typeId);
 };
 
 void GameObject::remove() {
-	this->level->objectList.remove(this);
-	this->level->eventListeningObjectList.remove(this);
+	this->flagRm = true;
 }
 
 
@@ -49,20 +50,27 @@ DynGameObject::DynGameObject() {
 	this->listensToEvents = false;
 }
 
+void DynGameObject::move()
+{
+	switch (this->dir)
+	{
+	case 1:this->x++; break;
+	case 2:this->y--; break;
+	case 3:this->x--; break;
+	case 4:this->y++; break;
+	}
+}
+
  void DynGameObject::step(){
 	 if (this->checkForwardCollision(4) == NULL) {
-		 switch (this->dir)
-		 {
-		 case 1:this->x++; break;
-		 case 2:this->y--; break;
-		 case 3:this->x--; break;
-		 case 4:this->y++; break;
-		 }
+		 this->move();
 	 }
 	 else {
 		 dir = 0;
 	 }
 }
+
+
 
 
 
@@ -126,4 +134,20 @@ void ObjPoint::step() {
 	if (this->checkDirectCollision(3) != NULL) {
 		this->remove(); //removing while still being pointed at in Level causes shit go haywire. Fix ASAP 
 	}
+}
+
+
+
+ObjMonster::ObjMonster() {
+	this->sprite = '#';
+	this->typeId = 6;
+	this->dir = 0;
+}
+
+void ObjMonster::step()
+{	
+	while (this->checkForwardCollision(4) != NULL || this->dir == 0) {
+		this->dir = 1 + std::rand() % 4;
+	}
+	this->move();
 }

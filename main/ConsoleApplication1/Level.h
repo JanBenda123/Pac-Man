@@ -22,7 +22,7 @@ public:
 	Level(std::string layoutFilePath);
 	GameObject* isObjAt(int x, int y, int typeId);
 
-	
+	void removeFlaggedObjects();
 	void load();
 	void step();
 	

@@ -7,7 +7,10 @@ class Level;
 class Event;
 
 class GameObject {
+private:
+	
 public:
+	bool flagRm;
 	char sprite;
 	int x;
 	int y;
@@ -29,6 +32,7 @@ public:
 	int dir; // 0 - still, 1 - right, 2 - up, 3 - left, 4 - down
 	DynGameObject();
 	void step() override;
+	void move();
 	GameObject* checkForwardCollision(int typeId);
 };
 
@@ -42,6 +46,12 @@ public:
 	ObjPlayer();
 	void step() override;
 	void processEvent(Event* e) override;
+};
+
+class ObjMonster:public DynGameObject {
+public:
+	ObjMonster();
+	void step() override;
 };
 
 class ObjPoint :public GameObject {

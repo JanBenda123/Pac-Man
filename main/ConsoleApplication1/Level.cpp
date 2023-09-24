@@ -50,6 +50,9 @@ void Level::load() {
 			else if (c == '.') {
 				newObj = new ObjPoint();
 			}
+			else if (c == '#') {
+				newObj = new ObjMonster();
+			}
 			else {
 				newObj = new ObjDeco(c);
 			}
@@ -69,6 +72,19 @@ void Level::load() {
 	}
 }
 
+void Level::removeFlaggedObjects() {
+	std::list<GameObject*>::iterator it = this->objectList.begin();
+	while (it != this->objectList.end()) {
+		if ((*it)->flagRm) {
+			this->eventListeningObjectList.remove(*it);
+			it = this->objectList.erase(it);// When object is deleted, Iterator already points to the next one	
+		}
+		else {
+			it++;
+		}
+	}
+}
+
 void Level::step() {
 	/// <summary>
 	/// Steps the time in the level
@@ -77,6 +93,9 @@ void Level::step() {
 	for (std::list<GameObject*>::iterator it = this->objectList.begin(); it != this->objectList.end(); it++) {
 		(*it)->step();
 	}
+
+	this->removeFlaggedObjects();
+
 	objectList.sort([](const GameObject* a, const GameObject* b) -> bool {
 		return a->y < b->y || (a->y == b->y && a->x < b->x);
 		});
@@ -93,3 +112,4 @@ GameObject* Level::isObjAt(int x, int y, int typeId) {
 	}
 	return NULL;
 };
+
