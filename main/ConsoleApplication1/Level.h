@@ -15,6 +15,7 @@ private:
 public:
 	int width;
 	int height;
+	int status;
 	EventLoop* eventLoop;
 	Renderer* renderer;
 	std::list<GameObject*> objectList;
@@ -24,6 +25,7 @@ public:
 
 	void removeFlaggedObjects();
 	void load();
+	bool play();
 	void step();
 	
 

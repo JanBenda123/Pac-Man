@@ -30,7 +30,7 @@ public:
 	void processQueue();
 	void clear();
 	void startIHThread();
-	void appendEvent(Event e);
+	void appendEvent(Event* e);
 
 };
 

@@ -17,6 +17,7 @@ EventLoop::EventLoop(Level* level) {
 
 
 }
+
 void EventLoop::lockQueue() {
 	this->queueUnlocked = false;
 }
@@ -34,8 +35,16 @@ void EventLoop::processQueue() {
 	//add data lock for processing part
 	this->lockQueue();
 	for (Event* e : this->eventQueue) {
+		if (e->type == 2) {
+			if (e->data == 'W') {//check for game ending events
+				this->level->status = 1;
+			}
+			else {
+				this->level->status = 2;
+			}
+			break;
+		}
 		for (GameObject* obj : this->level->eventListeningObjectList) {
-			//std::cout << e->data;
 			obj->processEvent(e);
 		}
 	}
@@ -46,9 +55,9 @@ void EventLoop::processQueue() {
 	std::this_thread::sleep_for(std::chrono::microseconds(200*1000));
 }
 
-void EventLoop::appendEvent(Event e) {
+void EventLoop::appendEvent(Event* e) {
 	if (this->queueUnlocked) {
-		this->eventQueue.push_back(&e); //Eventy možná budou mizet - zaniknou s ukonèením bìhu funkce v IH
+		this->eventQueue.push_back(e); //Eventy možná budou mizet - zaniknou s ukonèením bìhu funkce v IH
 	}
 }
 

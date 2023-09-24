@@ -4,6 +4,7 @@
 
 
 GameObject::GameObject() {
+	this->listensToEvents = false;
 	this->sprite = ' ';
 	this->zIndex = 1;
 	this->isDyn = false;
@@ -93,14 +94,27 @@ void DynGameObject::move()
 
 
 
- ObjPlayer::ObjPlayer() {
+ObjPlayer::ObjPlayer() {
 	 this->sprite = 'P';
 	 this->typeId = 3;
 	 this->listensToEvents = true;
  }
 
- void ObjPlayer::step() {
-	 DynGameObject::step();
+void ObjPlayer::step() {
+	 
+	 GameObject* obj = this->checkDirectCollision(6);
+	 if (obj != NULL) {
+		 Event* e = new Event(2, 'L');
+		 this->level->eventLoop->appendEvent(e);
+	 }
+	DynGameObject::step();
+
+	 if (this->checkDirectCollision(6) != NULL) {
+		 Event* e = new Event(2, 'L');
+		 this->level->eventLoop->appendEvent(e);
+
+	 }
+	 
  }
 
  void ObjPlayer::processEvent(Event* e)
@@ -145,9 +159,15 @@ ObjMonster::ObjMonster() {
 }
 
 void ObjMonster::step()
-{	
-	while (this->checkForwardCollision(4) != NULL || this->dir == 0) {
+{
+	int tryCounter = 0;
+	while (this->checkForwardCollision(6) != NULL || this->checkForwardCollision(4) != NULL || this->dir == 0) {
+		tryCounter++;
 		this->dir = 1 + std::rand() % 4;
+		if (tryCounter > 100) {// trapped monster condition
+			this->dir = 0;
+			break;
+		}
 	}
 	this->move();
 }

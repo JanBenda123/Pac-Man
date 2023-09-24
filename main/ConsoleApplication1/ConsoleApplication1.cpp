@@ -8,6 +8,6 @@
 int main()
 {
 	Level level("l1.txt");
-	level.load();
+	std::cout<<level.play();
 }
 

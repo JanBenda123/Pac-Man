@@ -10,6 +10,7 @@
 Level::Level(std::string layoutFilePath) {
 	this->width = 20;
 	this->height = 15;
+	this->status = 0; //0 - played, 1 - won, 2 - lost 
 	int size = (width + 2) * height - 2;// +-2 to account for line breaks
 
 	std::ifstream layoutFile(layoutFilePath, std::ios::binary);
@@ -22,23 +23,16 @@ Level::Level(std::string layoutFilePath) {
 }
 
 void Level::load() {
-	/// <summary>
-	/// Loads the level - processes layout string into sorted object list;
-	/// </summary>
-	
-
 	int i = 0;
 	char c;
 
-	for (int y = 0; y < this->height ; y++) {//loads the level
-		for (int x = 0; x < this->width+2; x++) {
+	for (int y = 0; y < this->height; y++) {//loads the level
+		for (int x = 0; x < this->width + 2; x++) {
 			c = levelLayout[x + y * (this->width + 2)];
 			if (c == ' ' || c == '\n' || c == '\r') {//skip for empty files
 				continue;
 			}
-
 			GameObject* newObj;
-			
 
 			//Parses level text files to game objects
 			if (c == 'P') {
@@ -66,9 +60,27 @@ void Level::load() {
 			}
 		}
 	}
+}
+
+
+bool Level::play() {
+	/// <summary>
+	/// Loads the level - processes layout string into sorted object list;
+	/// </summary>
+	
+	this->load();
+	
 	this->eventLoop->startIHThread();
-	while (true) {
+	while (!this->status) {
 		this->eventLoop->processQueue();
+	}
+
+
+	if (this->status==1){
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
@@ -84,6 +96,7 @@ void Level::removeFlaggedObjects() {
 		}
 	}
 }
+
 
 void Level::step() {
 	/// <summary>
