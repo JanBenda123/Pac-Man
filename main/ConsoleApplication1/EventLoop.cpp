@@ -11,10 +11,20 @@ Event loop spravuje Eventy vytvoøené herními objekty a input handlerem
 */
 EventLoop::EventLoop(Level* level) {
 	this->level = level;
-	this->eventQueue = std::list<Event*>();
-	
+	this->eventQueue = new std::list<Event*>();
 	this->queueUnlocked = true;
+	this->toBeTerminated = false;
+}
+bool EventLoop::checkIfTerminated() {
+	return this->toBeTerminated;
+}
 
+
+EventLoop::~EventLoop() {
+	this->toBeTerminated = true;
+	this->clear();
+	delete this->eventQueue; 
+	//this->inputHandlerThread->~thread();
 
 }
 
@@ -27,14 +37,14 @@ void EventLoop::unlockQueue() {
 }
 
 void EventLoop::clear() {
-	this->eventQueue.clear();
+	this->eventQueue->clear();
 
 }
 
 void EventLoop::processQueue() {
 	//add data lock for processing part
 	this->lockQueue();
-	for (Event* e : this->eventQueue) {
+	for (Event* e : *(this->eventQueue)) {
 		if (e->type == 2) {
 			if (e->data == 'W') {//check for game ending events
 				this->level->status = 1;
@@ -44,36 +54,36 @@ void EventLoop::processQueue() {
 			}
 			break;
 		}
-		for (GameObject* obj : this->level->eventListeningObjectList) {
+		for (GameObject* obj : *this->level->eventListeningObjectList) {
 			obj->processEvent(e);
 		}
 	}
 	this->clear();
 	this->unlockQueue();
-	level->step();
-	level->renderer->render();
-	std::this_thread::sleep_for(std::chrono::microseconds(200*1000));
 }
 
 void EventLoop::appendEvent(Event* e) {
 	if (this->queueUnlocked) {
-		this->eventQueue.push_back(e); //Eventy moná budou mizet - zaniknou s ukonèením bìhu funkce v IH
+		this->eventQueue->push_back(e); //Eventy moná budou mizet - zaniknou s ukonèením bìhu funkce v IH
 	}
 }
 
 
 
 void inputListeningThread(EventLoop& el) {
-	InputHandler ih(&el);
-	ih.startListeningLoop();
+	InputHandler* ih = new InputHandler(&el);
+	ih->startListeningLoop();
+	delete ih; //after it is signalled TBT, delete and finisth the thread
 }
 
 void EventLoop::startIHThread() {
 	std::thread inputThread(inputListeningThread, std::ref(*this));
+	this->inputHandlerThread = &inputThread;
 	inputThread.detach();  
 }
 /*
 1 - Keypress
+2 - change of level status
 */
 
 

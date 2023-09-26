@@ -3,7 +3,7 @@
 #include <string>
 #include <list>
 #include "Renderer.h"
-
+#include <thread>
 
 class Level;
 class GameObject;
@@ -21,12 +21,17 @@ class EventLoop{
 private:
 	void lockQueue();
 	void unlockQueue();
+	bool toBeTerminated;
+	std::thread* inputHandlerThread;
+
 public:
+	bool checkIfTerminated();
 	bool queueUnlocked;
 	Level* level;
 	InputHandler* inputHandler;
-	std::list<Event*> eventQueue;
+	std::list<Event*>* eventQueue;
 	EventLoop(Level* level);
+	~EventLoop();
 	void processQueue();
 	void clear();
 	void startIHThread();

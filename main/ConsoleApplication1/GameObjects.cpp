@@ -102,15 +102,15 @@ ObjPlayer::ObjPlayer() {
 
 void ObjPlayer::step() {
 	 
-	 GameObject* obj = this->checkDirectCollision(6);
+	 GameObject* obj = this->checkDirectCollision(6);//monster collision
 	 if (obj != NULL) {
-		 Event* e = new Event(2, 'L');
+		 Event* e = new Event(2, 'L'); //End game
 		 this->level->eventLoop->appendEvent(e);
 	 }
 	DynGameObject::step();
 
-	 if (this->checkDirectCollision(6) != NULL) {
-		 Event* e = new Event(2, 'L');
+	 if (this->checkDirectCollision(6) != NULL) {//monster collision
+		 Event* e = new Event(2, 'L');//End game
 		 this->level->eventLoop->appendEvent(e);
 
 	 }
@@ -155,6 +155,7 @@ void ObjPoint::step() {
 ObjMonster::ObjMonster() {
 	this->sprite = '#';
 	this->typeId = 6;
+	this->zIndex = 3;
 	this->dir = 0;
 }
 

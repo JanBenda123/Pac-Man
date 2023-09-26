@@ -18,16 +18,17 @@ public:
 	int status;
 	EventLoop* eventLoop;
 	Renderer* renderer;
-	std::list<GameObject*> objectList;
-	std::list<GameObject*> eventListeningObjectList;
+	std::list<GameObject*>* objectList;
+	std::list<GameObject*>* eventListeningObjectList;
 	Level(std::string layoutFilePath);
+	~Level();
 	GameObject* isObjAt(int x, int y, int typeId);
 
 	void removeFlaggedObjects();
 	void load();
 	bool play();
 	void step();
-	
+	bool isFinished();
 
 }; 
 

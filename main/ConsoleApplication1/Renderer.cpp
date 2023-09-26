@@ -8,7 +8,7 @@ Renderer::Renderer(Level* level) {
 };
 void Renderer::render() {
 	system("cls");
-	std::list<GameObject*>::iterator it = level->objectList.begin();
+	std::list<GameObject*>::iterator it = level->objectList->begin();
 	GameObject* objToDraw;
 	int isLast = 0;
 	for (int y = 0; y < level->height; y++) {
@@ -20,7 +20,7 @@ void Renderer::render() {
 				if ((*it)->zIndex > objToDraw->zIndex) { //compare z-indices
 					objToDraw = *it;
 				}
-				if (it != level->objectList.end()) {// If it's not the last element in list, continue
+				if (it != level->objectList->end()) {// If it's not the last element in list, continue
 					it++;
 				}
 				else {

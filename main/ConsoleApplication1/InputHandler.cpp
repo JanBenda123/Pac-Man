@@ -7,7 +7,7 @@ InputHandler::InputHandler(EventLoop* eventLoop) {
 }
 void InputHandler::startListeningLoop() {
 	char ch;
-	while (true) {
+	while (!this->eventLoop->checkIfTerminated()) {
 		if (_kbhit()) {
 			ch = _getch();
 			Event* e = new  Event(1, ch);
